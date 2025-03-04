@@ -51,7 +51,7 @@ const PostCard = ({ post }) => {
         </div>
 
         <div className="flex items-center justify-center gap-2">
-          <Trash2 onClick={() => dispatch(deletePost(post.id))} className="cursor-pointer" />
+          <Trash2 onClick={() => dispatch(deletePost(post.id))} className="cursor-pointer text-red-600" />
           <button
             className="btn"
             onClick={() => document.getElementById("edit-modal").showModal()}

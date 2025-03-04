@@ -20,12 +20,7 @@ const CreatePost = () => {
   const handleFileChange = (e) => {
     if (e.target.files.length > 0) {
       const file = e.target.files[0];
-      if(file){
-        if(!file.type.startsWith("image/")){
-          alert("only image files are allowed to upload")
-        }
-        return
-      }
+     
       const reader = new FileReader();
       reader.onload = () => {
         dispatch(setImagePreview(reader.result));
@@ -40,7 +35,7 @@ const CreatePost = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    if(!text.trim() && !imagePreview) return
     const newPost = {
       id: nanoid(),
       text: text.trim(),
@@ -93,8 +88,9 @@ const CreatePost = () => {
                 className="text-primary cursor-pointer"
               />
               {isEmojiPickerOpen && (
-                <div className="absolute top-10 left-0 z-50">
+                <div className="absolute  top-10 left-0 z-50">
                   <EmojiPicker
+                  width="18em"
                     className=""
                     onEmojiClick={(emoji) =>
                       setText((prev) => prev + emoji.emoji)
