@@ -29,8 +29,19 @@ const postSlice = createSlice({
             }
             localStorage.setItem("posts", JSON.stringify(state.posts));
         },
+        addComment:(state, action) => {
+            const { postId, comment } = action.payload;
+            const post = state.posts.find((post) => post.id === postId);
+            if (post) {
+                if(!post.comments){
+                    post.comments = [];
+                }
+                post.comments.push(comment);
+            }
+            localStorage.setItem("posts", JSON.stringify(state.posts));
+        }
     },
 });
 
-export const { addPost, deletePost, editPost } = postSlice.actions;
+export const { addPost, deletePost, editPost, addComment } = postSlice.actions;
 export default postSlice.reducer;

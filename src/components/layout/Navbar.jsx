@@ -18,22 +18,16 @@ const Navbar = () => {
       <div className="logo">
         <h1 className="font-bold text-4xl text-primary">Zylo</h1>
       </div>
-     <div className="flex items-center gap-2">
-   
-     {theme === "lofi" ? (
-         <SunMoon/>
-      
-     ) : (
-        <Moon/>
-     )}
-     
-      <input
-        type="checkbox"
-        className="toggle theme-controller"
-        checked={theme === "forest"}
-        onChange={handleToggle}
-      />
-     </div>
+      <div className="flex items-center gap-2">
+        {theme === "lofi" ? <SunMoon /> : <Moon />}
+
+        <input
+          type="checkbox"
+          className="toggle theme-controller"
+          checked={theme === "forest"}
+          onChange={handleToggle}
+        />
+      </div>
     </div>
   );
 };

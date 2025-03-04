@@ -7,13 +7,14 @@ import {
 } from "lucide-react";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deletePost, editPost } from "../features/PostSlice";
+import { addComment, deletePost, editPost } from "../features/PostSlice";
 import CommentCard from "./CommentCard";
 
 const PostCard = ({ post }) => {
   const dispatch = useDispatch();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCommentExpand, setIsCommentExpand] = useState(false);
+  const [comment, setComment] = useState("");
 
   const handleEdit = () => {
     const newText = prompt("Edit Your Post", post.text);
@@ -25,6 +26,13 @@ const PostCard = ({ post }) => {
   const handleDelete = () => {
     dispatch(deletePost(post.id));
   };
+
+  const handleCommentSubmit = () => {
+    if(comment.trim()){
+        dispatch(addComment({postId: post.id, comment}))
+        setComment('')
+    }
+  }
 
   return (
     <div className="card  border-base-content/40 border shadow shadow p-4">
@@ -110,9 +118,13 @@ const PostCard = ({ post }) => {
             type="text"
             placeholder="Add Your Comment Here"
             className="input w-full input-ghost"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
           />
+          <button onClick={handleCommentSubmit}>Add Comment</button>
           <div className="all-comments mt-1">
-            <CommentCard />
+          {post.comments &&
+              post.comments.map((c, index) => <CommentCard key={index} comment={c} />)}
           </div>
         </div>
       )}
