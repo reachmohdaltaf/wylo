@@ -118,7 +118,10 @@ const CreatePost = () => {
             >
               <X />
             </button>
-            <img src={imagePreview} className="md:w-72 w-52 h-52 md:h-72  " alt="" />
+            <div className="w-full md:w-72 h-full md:h-72 flex items-center justify-center overflow-hidden border rounded-lg">
+  <img src={imagePreview} className="w-full h-full object-cover" alt="Preview" />
+</div>
+
           </div>
         )}
       </form>
