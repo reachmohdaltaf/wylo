@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <div className="navbar flex items-center justify-between bg-base-100 shadow-sm px-6">
       <div className="logo">
-        <h1 className="font-bold text-4xl text-primary">Zylo</h1>
+        <img src="../public/logo.svg" className={`h-12 w-12 ${theme === "forest" ? "invert" : ""}`} alt="" />
       </div>
       <div className="flex items-center gap-2">
         {theme === "lofi" ? <SunMoon /> : <Moon /> }

@@ -1,4 +1,4 @@
-import { Edit, Image, MessageCircle, Trash2 } from "lucide-react";
+import { Edit, Image, MessageCircle, ThumbsUp, Trash2 } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addComment, deletePost, editPost } from "../features/PostSlice";
@@ -36,12 +36,12 @@ const PostCard = ({ post }) => {
   };
 
   return (
-    <div className="card border-base-content/40 border shadow p-4">
-      <div className="profileimage flex justify-between">
-        <div className="flex gap-3">
+    <div className="card bg-base-200 shadow p-4">
+      <div className="profileimage flex bg-base-100 p-4 justify-between">
+        <div className="flex  gap-3">
           <img
             src="https://media.istockphoto.com/id/1341046662/vector/picture-profile-icon-human-or-people-sign-and-symbol-for-template-design.jpg?s=612x612&w=0&k=20&c=A7z3OK0fElK3tFntKObma-3a7PyO8_2xxW0jtmjzT78="
-            className="h-10 w-10 bg-red-200 rounded-full"
+            className="h-10 w-10 bg-base-100  rounded-full"
             alt="Profile"
           />
           <div className="flex flex-col leading-5">
@@ -50,14 +50,11 @@ const PostCard = ({ post }) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-">
-          <Trash2 onClick={() => dispatch(deletePost(post.id))} className="cursor-pointer text-red-600" />
-          <button
-            className="btn"
-            onClick={() => document.getElementById("edit-modal").showModal()}
-          >
-            <Edit className="cursor-pointer" />
-          </button>
+        <div className="flex items-center justify-center gap-2">
+          <Trash2 onClick={() => dispatch(deletePost(post.id))} className="cursor-pointer " />
+         
+            <Edit className="cursor-pointer"  onClick={() => document.getElementById("edit-modal").showModal()} />
+         
 
           <dialog id="edit-modal" className="modal">
             <div className="modal-box">
@@ -80,7 +77,7 @@ const PostCard = ({ post }) => {
                 <img src={selectedImage} alt="Preview" className="w-full max-h-40 mt-2 object-contain" />
               )}
               <div className="flex gap-2 mt-4">
-                <button onClick={handleEdit} className="btn btn-primary">Save</button>
+                <button onClick={handleEdit} className="btn btn-neutral">Save</button>
                 <button
                   className="btn btn-secondary"
                   onClick={() => document.getElementById("edit-modal").close()}
@@ -93,8 +90,8 @@ const PostCard = ({ post }) => {
         </div>
       </div>
 
-      <div className="mt-4">
-        <p className={`break-words text-sm whitespace-pre-wrap w-full ${post.text.length > 100 && !isExpanded ? "line-clamp-2" : ""}`}>
+      <div className="">
+        <p className={`break-words bg-base-100 py-4 px-2 text-sm whitespace-pre-wrap w-full ${post.text.length > 100 && !isExpanded ? "line-clamp-2" : ""}`}>
           {post.text}
         </p>
         {post.text.length > 100 && (
@@ -104,29 +101,32 @@ const PostCard = ({ post }) => {
         )}
 
         {post.image && (
-          <div className="flex items-center justify-center">
+          <div className="flex bg-base-100 p-4 items-center justify-center">
             <img src={post.image} alt="Post" className="w-full max-h-80 object-contain mt-2" />
           </div>
         )}
       </div>
 
       {/* Comment Section */}
-      <div className="mt-2 flex items-end card">
+      <div className="mt-2 gap-5 flex items-end ">
+              <ThumbsUp/>
         <MessageCircle onClick={() => setIsCommentExpand(!isCommentExpand)} className="cursor-pointer" size={24} />
       </div>
 
       {isCommentExpand && (
-        <div className="w-full bg-base-200 p-3 rounded-md mt-3">
-          <input
+        <div className="w-full  bg-base-200 p-1 rounded-md mt-3">
+        <div className="flex items-center gap-2 justify-between">
+        <input
             type="text"
             placeholder="Add Your Comment Here"
-            className="input w-full input-ghost"
+            className="input w-full input-ghost "
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />
-          <button onClick={() => dispatch(addComment({ postId: post.id, comment }))} className="btn btn-primary mt-2">
+          <button onClick={() => dispatch(addComment({ postId: post.id, comment }))} className="btn ">
             Add Comment
           </button>
+        </div>
           <div className="all-comments mt-2">
             {post.comments && post.comments.map((c, index) => <CommentCard key={index} comment={c} />)}
           </div>
