@@ -18,7 +18,7 @@ const Navbar = () => {
   return (
     <div className="navbar flex items-center justify-between bg-base-100 shadow-sm px-6">
       <div className="logo">
-        <img src="../public/logo.svg" className={`h-12 w-12 ${theme === "forest" ? "invert" : ""}`} alt="" />
+        <img src="https://res.cloudinary.com/dqdwfvrkb/image/upload/v1741078537/qkffldibxjijkxp0zqom.svg" className={`h-12 w-12 ${theme === "forest" ? "invert" : ""}`} alt="" />
       </div>
       <div className="flex items-center gap-2">
         {theme === "lofi" ? <SunMoon /> : <Moon /> }
