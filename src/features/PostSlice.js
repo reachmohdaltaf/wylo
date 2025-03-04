@@ -22,10 +22,13 @@ const postSlice = createSlice({
         },
 
         editPost: (state, action) => {
-            const { id, text } = action.payload;
+            const { id, text, image } = action.payload;
             const post = state.posts.find((post) => post.id === id);
             if (post) {
                 post.text = text;
+                if(image){
+                    post.image = image
+                }
             }
             localStorage.setItem("posts", JSON.stringify(state.posts));
         },

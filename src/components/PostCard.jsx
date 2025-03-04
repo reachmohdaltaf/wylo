@@ -1,41 +1,42 @@
-import {
-  Edit,
-  EllipsisVertical,
-  MessageCircle,
-  MessagesSquare,
-  Trash2,
-} from "lucide-react";
-import React, { useState } from "react";
+import { Edit, Image, MessageCircle, Trash2 } from "lucide-react";
+import React, { useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { addComment, deletePost, editPost } from "../features/PostSlice";
 import CommentCard from "./CommentCard";
 
 const PostCard = ({ post }) => {
+  const imageRef = useRef(null)
   const dispatch = useDispatch();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isCommentExpand, setIsCommentExpand] = useState(false);
   const [comment, setComment] = useState("");
+  const [editedText, setEditedText] = useState(post.text);
+  const [selectedImage, setSelectedImage] = useState(null);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if(file){
+        if(!file.type.startsWith("image/")){
+          alert("only image files are allowed to upload")
+        }
+        return
+      }
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImage(reader.result); 
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleEdit = () => {
-    const newText = prompt("Edit Your Post", post.text);
-    if (newText) {
-      dispatch(editPost({ id: post.id, text: newText }));
-    }
+    dispatch(editPost({ id: post.id, text: editedText, image: selectedImage }));
+    document.getElementById("edit-modal").close();
   };
-
-  const handleDelete = () => {
-    dispatch(deletePost(post.id));
-  };
-
-  const handleCommentSubmit = () => {
-    if(comment.trim()){
-        dispatch(addComment({postId: post.id, comment}))
-        setComment('')
-    }
-  }
 
   return (
-    <div className="card  border-base-content/40 border shadow shadow p-4">
+    <div className="card border-base-content/40 border shadow p-4">
       <div className="profileimage flex justify-between">
         <div className="flex gap-3">
           <img
@@ -44,76 +45,78 @@ const PostCard = ({ post }) => {
             alt="Profile"
           />
           <div className="flex flex-col leading-5">
-            <h3 className="">Anonymous</h3>
-            <p className="text-xs text-base-content/70">
-              Web developer (React & Node)
-            </p>
+            <h3>Anonymous</h3>
+            <p className="text-xs text-base-content/70">Web developer (React & Node)</p>
           </div>
         </div>
-        <div className="dropdown dropdown-start  md:mr-0 mr-2">
-          <div
-            tabIndex={0}
-            role="button"
-            className="btn btn-md rounded-md cursor-pointer p-0 m-1"
+
+        <div className="flex items-center justify-center gap-2">
+          <Trash2 onClick={() => dispatch(deletePost(post.id))} className="cursor-pointer" />
+          <button
+            className="btn"
+            onClick={() => document.getElementById("edit-modal").showModal()}
           >
-            <EllipsisVertical size={20} />
-          </div>
-          <ul
-            tabIndex={0}
-            className="dropdown-content menu bg-base-200 "
-          >
-            <li>
-              <button onClick={handleDelete}>
-                <Trash2 /> <span className="hidden md:inline">Delete</span>
-              </button>
-            </li>
-            <li>
-              <button onClick={handleEdit}>
-                <Edit /> <span className="hidden md:inline">Edit</span>
-              </button>
-            </li>
-          </ul>
+            <Edit className="cursor-pointer" />
+          </button>
+
+          <dialog id="edit-modal" className="modal">
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">Edit the Post</h3>
+              <input
+                type="text"
+                className="input border border-primary input-ghost w-full mt-2"
+                value={editedText}
+                onChange={(e) => setEditedText(e.target.value)}
+              />
+              <input
+                type="file"
+                accept="image/*"
+                className="mt-4 hidden file-input"
+                onChange={handleImageChange}
+                ref={imageRef}
+              />
+             <button  onClick={()=>imageRef.current.click()} className="btn mt-3 py-10 p-4"> <Image size={40} className=" cursor-pointer text-primary"/></button>
+              {selectedImage && (
+                <img src={selectedImage} alt="Preview" className="w-full max-h-40 mt-2 object-contain" />
+              )}
+              <div className="flex gap-2 mt-4">
+                <button onClick={handleEdit} className="btn btn-primary">Save</button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => document.getElementById("edit-modal").close()}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </dialog>
         </div>
       </div>
 
       <div className="mt-4">
-        <div>
-          <p
-            className={`break-words text-sm whitespace-pre-wrap w-full ${
-              isExpanded ? "" : "line-clamp-2"
-            }`}
-          >
-            {post.text}
-          </p>
-          {post.text.length > 100 && (
-            <button
-              className="text-blue-600 cursor-pointer "
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? "Read Less" : "Read More"}
-            </button>
-          )}
-        </div>
+        <p className={`break-words text-sm whitespace-pre-wrap w-full ${post.text.length > 100 && !isExpanded ? "line-clamp-2" : ""}`}>
+          {post.text}
+        </p>
+        {post.text.length > 100 && (
+          <button className="text-blue-600 cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
+            {isExpanded ? "Read Less" : "Read More"}
+          </button>
+        )}
 
         {post.image && (
           <div className="flex items-center justify-center">
-            <img
-              src={post.image}
-              alt=""
-              className="w-full max-h-80 object-contain mt-2"
-            />
+            <img src={post.image} alt="Post" className="w-full max-h-80 object-contain mt-2" />
           </div>
         )}
       </div>
+
+      {/* Comment Section */}
       <div className="mt-2 flex items-end card">
-        <MessageCircle
-          onClick={() => setIsCommentExpand(!isCommentExpand)}
-          className="cursor-pointer"
-          size={24}
-        />
+        <MessageCircle onClick={() => setIsCommentExpand(!isCommentExpand)} className="cursor-pointer" size={24} />
       </div>
+
       {isCommentExpand && (
-        <div className="w-full bg-base-200 p-1 rounded-md mt-3">
+        <div className="w-full bg-base-200 p-3 rounded-md mt-3">
           <input
             type="text"
             placeholder="Add Your Comment Here"
@@ -121,10 +124,11 @@ const PostCard = ({ post }) => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />
-          <button onClick={handleCommentSubmit}>Add Comment</button>
-          <div className="all-comments mt-1">
-          {post.comments &&
-              post.comments.map((c, index) => <CommentCard key={index} comment={c} />)}
+          <button onClick={() => dispatch(addComment({ postId: post.id, comment }))} className="btn btn-primary mt-2">
+            Add Comment
+          </button>
+          <div className="all-comments mt-2">
+            {post.comments && post.comments.map((c, index) => <CommentCard key={index} comment={c} />)}
           </div>
         </div>
       )}
