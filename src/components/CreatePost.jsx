@@ -118,7 +118,7 @@ const CreatePost = () => {
             >
               <X />
             </button>
-            <img src={imagePreview} className="w-72 h-72  " alt="" />
+            <img src={imagePreview} className="md:w-72 w-52 h-52 md:h-72  " alt="" />
           </div>
         )}
       </form>

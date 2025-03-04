@@ -15,13 +15,13 @@ const PostCard = ({ post }) => {
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+  
     if (file) {
-      if(file){
-        if(!file.type.startsWith("image/")){
-          alert("only image files are allowed to upload")
-        }
-        return
+      if (!file.type.startsWith("image/")) {
+        alert("Only image files are allowed to upload");
+        return; // Exit if the file is not an image
       }
+  
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result); 
@@ -29,7 +29,7 @@ const PostCard = ({ post }) => {
       reader.readAsDataURL(file);
     }
   };
-
+  
   const handleEdit = () => {
     dispatch(editPost({ id: post.id, text: editedText, image: selectedImage }));
     document.getElementById("edit-modal").close();
@@ -50,7 +50,7 @@ const PostCard = ({ post }) => {
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex items-center justify-center gap-">
           <Trash2 onClick={() => dispatch(deletePost(post.id))} className="cursor-pointer text-red-600" />
           <button
             className="btn"
