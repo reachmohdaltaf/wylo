@@ -96,7 +96,7 @@ const PostCard = ({ post }) => {
       </div>
 
       <div className="">
-        <p className={`break-words bg-base-100   text-sm whitespace-pre-wrap w-full ${post.text.length > 100 && !isExpanded ? "line-clamp-2" : ""}`}>
+        <p className={`break-words bg-base-100 p-2  text-sm whitespace-pre-wrap w-full ${post.text.length > 100 && !isExpanded ? "line-clamp-2" : ""}`}>
           {post.text}
         </p>
         {post.text.length > 100 && (
@@ -114,7 +114,7 @@ const PostCard = ({ post }) => {
 
       {/* Comment Section */}
       <div className="mt-2 gap-5 flex items-end ">
-              <ThumbsUp onClick={handleLike} className={`cursor-pointer ${like ? "text-primary" : "text-pink-600"}`} size={24}/>
+              <ThumbsUp onClick={handleLike} className={`cursor-pointer ${like ? "text-pink-600" : "text-primary"}`} size={24}/>
         <MessageCircle onClick={() => setIsCommentExpand(!isCommentExpand)} className="cursor-pointer" size={24} />
       </div>
 
