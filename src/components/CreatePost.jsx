@@ -107,7 +107,7 @@ const CreatePost = () => {
               {isEmojiPickerOpen && (
                 <div className="absolute top-10 left-0 z-50">
                   <EmojiPicker
-                    width="18em"
+                    width="16em"
                     onEmojiClick={(emoji) =>
                       setText((prev) => prev + emoji.emoji)
                     }
