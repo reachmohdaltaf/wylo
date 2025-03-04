@@ -12,6 +12,7 @@ const PostCard = ({ post }) => {
   const [comment, setComment] = useState("");
   const [editedText, setEditedText] = useState(post.text);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [like, setLike] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -29,6 +30,10 @@ const PostCard = ({ post }) => {
       reader.readAsDataURL(file);
     }
   };
+
+  const handleLike = () => {
+    setLike((prev) => !prev);
+  }
   
   const handleEdit = () => {
     dispatch(editPost({ id: post.id, text: editedText, image: selectedImage }));
@@ -36,7 +41,7 @@ const PostCard = ({ post }) => {
   };
 
   return (
-    <div className="card bg-base-200 shadow p-4">
+    <div className="card bg-base-200 shadow p-1">
       <div className="profileimage flex bg-base-100 p-4 justify-between">
         <div className="flex  gap-3">
           <img
@@ -46,7 +51,7 @@ const PostCard = ({ post }) => {
           />
           <div className="flex flex-col leading-5">
             <h3>Anonymous</h3>
-            <p className="text-xs text-base-content/70">Web developer (React & Node)</p>
+            <p className="text-xs text-base-content/70">Web developer</p>
           </div>
         </div>
 
@@ -91,7 +96,7 @@ const PostCard = ({ post }) => {
       </div>
 
       <div className="">
-        <p className={`break-words bg-base-100 py-4 px-2 text-sm whitespace-pre-wrap w-full ${post.text.length > 100 && !isExpanded ? "line-clamp-2" : ""}`}>
+        <p className={`break-words bg-base-100   text-sm whitespace-pre-wrap w-full ${post.text.length > 100 && !isExpanded ? "line-clamp-2" : ""}`}>
           {post.text}
         </p>
         {post.text.length > 100 && (
@@ -101,7 +106,7 @@ const PostCard = ({ post }) => {
         )}
 
         {post.image && (
-          <div className="flex bg-base-100 p-4 items-center justify-center">
+          <div className="flex bg-base-100 md:p-4 items-center justify-center">
             <img src={post.image} alt="Post" className="w-full max-h-80 object-contain mt-2" />
           </div>
         )}
@@ -109,7 +114,7 @@ const PostCard = ({ post }) => {
 
       {/* Comment Section */}
       <div className="mt-2 gap-5 flex items-end ">
-              <ThumbsUp/>
+              <ThumbsUp onClick={handleLike} className={`cursor-pointer ${like ? "text-primary" : "text-pink-600"}`} size={24}/>
         <MessageCircle onClick={() => setIsCommentExpand(!isCommentExpand)} className="cursor-pointer" size={24} />
       </div>
 

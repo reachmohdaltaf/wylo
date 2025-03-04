@@ -74,11 +74,11 @@ const CreatePost = () => {
         onSubmit={handleSubmit}
         className="card bg-base-200 shadow p-2 md:p-4"
       >
-        <div className="flex w-full justify-between bg-base-100 p-4 ">
+        <div className="flex w-full items-center justify-between bg-base-100 p-4 ">
           <div className="profilephoto bg-base-400 object-contain w-20 h-20 rounded-3xl">
             <img
               src="https://media.istockphoto.com/id/1341046662/vector/picture-profile-icon-human-or-people-sign-and-symbol-for-template-design.jpg?s=612x612&w=0&k=20&c=A7z3OK0fElK3tFntKObma-3a7PyO8_2xxW0jtmjzT78="
-              className="w-14 cursor-pointer h-14 rounded-full"
+              className="w-12 mt-1 cursor-pointer h-12 rounded-full"
               alt=""
             />
           </div>
@@ -86,7 +86,7 @@ const CreatePost = () => {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="What is hapenning ?!"
-            className="outline-none w-[100%] textarea-neutral rounded-md bg-base-100 p-4 textarea-lg"
+            className="outline-none w-[100%] placeholder:text-xl textarea-neutral rounded-md bg-base-100 p-4 textarea-lg"
           />
         </div>
 
